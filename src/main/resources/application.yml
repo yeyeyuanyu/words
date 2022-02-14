@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    username: root
+    password: 2469030
+    url: jdbc:mysql://localhost:3306/words?serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true   #开启页面表单的Rest功能
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 10MB
+mybatis:
+  #config-location: classpath:mybatis/mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true #k开启驼峰命名
+
+
+filePath: D:/单词库/

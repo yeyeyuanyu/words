@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.yyworker.words.automaticgenerated.dao.BookLexiconDao">
+
+    <resultMap type="xyz.yyworker.words.automaticgenerated.entity.BookLexicon" id="BookLexiconMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="bookName" column="book_name" jdbcType="VARCHAR"/>
+        <result property="word" column="word" jdbcType="VARCHAR"/>
+        <result property="chineseParaphrase" column="chinese_paraphrase" jdbcType="VARCHAR"/>
+        <result property="englishParaphrase" column="english_paraphrase" jdbcType="VARCHAR"/>
+        <result property="lexiconId" column="lexicon_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BookLexiconMap">
+        select
+          id, book_name, word, chinese_paraphrase, english_paraphrase, lexicon_id
+        from book_lexicon
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BookLexiconMap">
+        select
+          id, book_name, word, chinese_paraphrase, english_paraphrase, lexicon_id
+        from book_lexicon
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="bookName != null and bookName != ''">
+                and book_name = #{bookName}
+            </if>
+            <if test="word != null and word != ''">
+                and word = #{word}
+            </if>
+            <if test="chineseParaphrase != null and chineseParaphrase != ''">
+                and chinese_paraphrase = #{chineseParaphrase}
+            </if>
+            <if test="englishParaphrase != null and englishParaphrase != ''">
+                and english_paraphrase = #{englishParaphrase}
+            </if>
+            <if test="lexiconId != null">
+                and lexicon_id = #{lexiconId}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from book_lexicon
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="bookName != null and bookName != ''">
+                and book_name = #{bookName}
+            </if>
+            <if test="word != null and word != ''">
+                and word = #{word}
+            </if>
+            <if test="chineseParaphrase != null and chineseParaphrase != ''">
+                and chinese_paraphrase = #{chineseParaphrase}
+            </if>
+            <if test="englishParaphrase != null and englishParaphrase != ''">
+                and english_paraphrase = #{englishParaphrase}
+            </if>
+            <if test="lexiconId != null">
+                and lexicon_id = #{lexiconId}
+            </if>
+        </where>
+    </select>
+    <select id="queryAllByBookName" resultType="xyz.yyworker.words.automaticgenerated.entity.BookLexicon">
+        select id, book_name, word, chinese_paraphrase, english_paraphrase, lexicon_id
+        from book_lexicon where book_name=#{name}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into book_lexicon(book_name, word, chinese_paraphrase, english_paraphrase, lexicon_id)
+                    values (#{bookName}, #{word}, #{chineseParaphrase}, #{englishParaphrase}, #{lexiconId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into book_lexicon(book_name, word, chinese_paraphrase, english_paraphrase, lexicon_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.bookName}, #{entity.word}, #{entity.chineseParaphrase}, #{entity.englishParaphrase}, #{entity.lexiconId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into book_lexicon(book_name, word, chinese_paraphrase, english_paraphrase, lexicon_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.bookName}, #{entity.word}, #{entity.chineseParaphrase}, #{entity.englishParaphrase}, #{entity.lexiconId})
+        </foreach>
+        on duplicate key update
+        book_name = values(book_name),
+        word = values(word),
+        chinese_paraphrase = values(chinese_paraphrase),
+        english_paraphrase = values(english_paraphrase),
+        lexicon_id = values(lexicon_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update book_lexicon
+        <set>
+            <if test="bookName != null and bookName != ''">
+                book_name = #{bookName},
+            </if>
+            <if test="word != null and word != ''">
+                word = #{word},
+            </if>
+            <if test="chineseParaphrase != null and chineseParaphrase != ''">
+                chinese_paraphrase = #{chineseParaphrase},
+            </if>
+            <if test="englishParaphrase != null and englishParaphrase != ''">
+                english_paraphrase = #{englishParaphrase},
+            </if>
+            <if test="lexiconId != null">
+                lexicon_id = #{lexiconId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateByBooKNameAndWord">
+        update book_lexicon
+        set english_paraphrase = #{englishParaphrase}
+        where book_name = #{bookName} and word = #{word}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from book_lexicon where id = #{id}
+    </delete>
+
+</mapper>
+
